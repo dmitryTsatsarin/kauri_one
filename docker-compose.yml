@@ -1,0 +1,47 @@
+version: "3.1"
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5435:5432"
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+    volumes:
+    - ./docker/init.sql:/docker-entrypoint-initdb.d/a_init.sql
+    networks:
+      - kauri_one
+
+  kauri_one_rabbit:    
+    image: rabbitmq:3-management
+    hostname: "rabbit_hostname"
+    ports:
+      - "8080:15672"
+      - "5672:5672"
+
+    environment: 
+      RABBITMQ_DEFAULT_PASS: "6cae046bd8de29"
+      RABBITMQ_DEFAULT_USER: "rabbitusername"
+      RABBITMQ_DEFAULT_VHOST: "/kauri_one_vhost"
+
+    networks:
+      - kauri_one
+
+# TODO: need some additional settings
+#  kauri_workers:
+#    #image: kauri_one_workers
+#    build: .
+#    volumes:
+#      - .:/code
+#    depends_on:
+#      - "kauri_one_rabbit"
+#      - "db"
+#    networks:
+#    - kauri_one
+
+
+networks:
+  kauri_one:
+    driver: bridge

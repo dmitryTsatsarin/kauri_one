@@ -1,0 +1,8 @@
+psycopg2==2.7.5
+arrow==0.12.1
+celery==4.2.1
+Django==2.0.7
+django-extensions==2.1.0
+djangorestframework==3.8.2
+hitbtc==1.0.4
+
